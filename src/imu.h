@@ -16,6 +16,7 @@ class IMU {
 
     private:
         const float kGravity_ = 9.80665f;
+        const float kPI180_ = M_PI/180.0f;
         HardwareSerial* const serial_;
         
     public:
@@ -34,6 +35,10 @@ class IMU {
         bool disableGyroscopeAutomaticCalibration();
         bool set6axisAlgorithm();
         bool set9axisAlgorithm();
+
+        void Rx(std::array<float,3>& v, const float rad);
+        void Ry(std::array<float,3>& v, const float rad);
+        void Rz(std::array<float,3>& v, const float rad);
 
         void getAccel(std::array<float, 3>& acc);
         bool getPosture(std::array<float, 3>& pos);

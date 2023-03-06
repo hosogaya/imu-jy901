@@ -50,6 +50,22 @@ bool IMU::set9axisAlgorithm() {
     return num == 5;
 }
 
+void IMU::Rx(std::array<float,3>& vec, const float rad) {
+    float _cos = std::cos(rad);
+    float _sin = std::sin(rad);
+    float temp = -vec[1] * _sin + vec[2] * _cos;
+    vec[1] = vec[1] * _cos + vec[2] * _sin;
+    vec[2] = temp;
+}
+
+void IMU::Ry(std::array<float,3>& vec, const float pitch) {
+    float _cos = std::cos(pitch);
+    float _sin = std::sin(pitch);
+    float temp = vec[0] * _sin + vec[2] * _cos;
+    vec[0] = vec[0] * _cos - vec[2] * _sin;
+    vec[2] = temp;
+}
+
 void IMU::getAccel(std::array<float, 3>& acc) {
     acc[0] = JY901.getAccX();
     acc[1] = JY901.getAccY();   
@@ -57,8 +73,8 @@ void IMU::getAccel(std::array<float, 3>& acc) {
 
     // 静止しているときに{{0.0f, 0.0f, 0.0f}}をとるように補正をかける
     std::array<float, 3> g{{0.0, 0.0, -1.0}};
-    ArrayMath::Ry(pos_[1], g);
-    ArrayMath::Rx(pos_[0], g);
+    Ry(g, pos_[1]);
+    Rx(g, pos_[0]);
     for (size_t i = 0; i < 3; ++i) acc[i] = (acc[i] + g[i])*kGravity_*1e3f; // [g] -> [mm/s^2]
 }
 
@@ -69,7 +85,7 @@ bool IMU::getPosture(std::array<float, 3>& pos) {
     for (size_t i = 0; i < 3; ++i){
         if (pos[i] > 180) pos[i] -= 360;
         if (std::abs(pos[i]) > 75 && i != 2) {return false;} // ignore yaw angular
-        pos[i] *= PI180;
+        pos[i] *= kPI180_;
     }
     return true;
 }
@@ -80,7 +96,7 @@ void IMU::getPostureVel(std::array<float, 3>& pos_vel) {
     pos_vel[2] = JY901.getGyroZ();
 
     for (size_t i = 0; i < 3; ++i) {
-        pos_vel[i] *= PI180;
+        pos_vel[i] *= kPI180_;
     }
 }
 
