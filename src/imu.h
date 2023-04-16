@@ -28,6 +28,7 @@ class IMU {
         std::array<float, 3> pos_vel_;
         
     public:
+        IMU(){}
         IMU(const unsigned long baudrate, HardwareSerial& s);
         bool setup(const unsigned long baudrate, HardwareSerial& s);
         
