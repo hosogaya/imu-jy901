@@ -17,7 +17,7 @@ class IMU {
     private:
         const float kGravity_ = 9.80665f;
         const float kPI180_ = M_PI/180.0f;
-        HardwareSerial* const serial_;
+        HardwareSerial* serial_;
         
     public:
         bool is_unsafe_ = false;
@@ -29,6 +29,7 @@ class IMU {
         
     public:
         IMU(const unsigned long baudrate, HardwareSerial& s);
+        bool setup(const unsigned long baudrate, HardwareSerial& s);
         
         bool callibrate(const CalibrateReg reg);
         bool enableGyroscopeAutomaticCalibration();

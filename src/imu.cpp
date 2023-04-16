@@ -1,6 +1,12 @@
 #include "imu.h"
 
 IMU::IMU(const unsigned long baudrate, HardwareSerial& s):serial_(&s){
+    this->setup(baudrate, s);
+}
+
+bool IMU::setup(const unsigned long baudrate, HardwareSerial& s)
+{
+    serial_ = &s;
     serial_->begin(baudrate);
     JY901.attach(*serial_);
     while (! *serial_);
