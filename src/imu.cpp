@@ -1,4 +1,5 @@
 #include "imu.h"
+#include <cmath>
 
 IMU::IMU(const unsigned long baudrate, HardwareSerial& s):serial_(&s){
     this->setup(baudrate, s);
@@ -16,12 +17,14 @@ bool IMU::setup(const unsigned long baudrate, HardwareSerial& s)
 bool IMU::setReturnHz(const CJY901::ReturnHz hz) {
     uint8_t buff_return_rate[5] ={0xFF, 0xAA, CJY901::Reg::ReturnRateReg, hz, 0x00};
     size_t num = serial_->write(buff_return_rate, 5);
+    serial_->flush();
     return (num == 5);
 }
 
 bool IMU::setBaudrate(const CJY901::BaudRate buadrate) {
     uint8_t buff_baudrate[5] = {0xFF, 0xAA, CJY901::Reg::BaudRateReg, buadrate, 0x00};
     size_t num = serial_->write(buff_baudrate, 5);
+    serial_->flush();
 
     return (num == 5);
 }
@@ -35,12 +38,16 @@ bool IMU::callibrate(const CalibrateReg reg) {
 bool IMU::enableGyroscopeAutomaticCalibration() {
     uint8_t buff[5] = {0xFF, 0xAA, 0x63, 0x00, 0x00};
     size_t num = serial_->write(buff, 5);
+    serial_->flush();
+
     return num == 5;
 }
 
 bool IMU::disableGyroscopeAutomaticCalibration() {
     uint8_t buff[5] = {0xFF, 0xAA, 0x63, 0x01, 0x00};
     size_t num = serial_->write(buff, 5);
+    serial_->flush();
+
     return num == 5;
 }
 
@@ -53,6 +60,8 @@ bool IMU::set6axisAlgorithm() {
 bool IMU::set9axisAlgorithm() {
     uint8_t buff[5] = {0xFF, 0xAA, 0x24, 0x00, 0x00};
     size_t num = serial_->write(buff, 5);
+    serial_->flush();
+
     return num == 5;
 }
 
