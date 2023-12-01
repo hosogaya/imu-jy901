@@ -1,4 +1,4 @@
-#include "imu.h"
+#include <imu_jy901/imu.h>
 #include <cmath>
 
 IMU::IMU(const unsigned long baudrate, HardwareSerial& s):serial_(&s){
@@ -79,6 +79,14 @@ void IMU::Ry(std::array<float,3>& vec, const float pitch) {
     float temp = vec[0] * _sin + vec[2] * _cos;
     vec[0] = vec[0] * _cos - vec[2] * _sin;
     vec[2] = temp;
+}
+
+void IMU::Rz(std::array<float,3>& vec, const float yaw) {
+    float _cos = std::cos(yaw);
+    float _sin = std::sin(yaw);
+    float temp = -vec[0] * _sin + vec[1] * _cos;
+    vec[0] = vec[0] * _cos + vec[1] * _sin;
+    vec[1] = temp;
 }
 
 void IMU::getAccel(std::array<float, 3>& acc) {

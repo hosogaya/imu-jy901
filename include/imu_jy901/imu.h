@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include "arduino-JY901-master/JY901.h"
+#include <arduino-JY901-master/JY901.h>
 
 class IMU {
     public:
