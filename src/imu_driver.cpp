@@ -59,4 +59,15 @@ bool ImuDriver::getData(std::array<float, 3>& pos, std::array<float, 3>& pos_vel
     return true;
 }
 
+bool ImuDriver::read(std::array<float, 3>& pos, std::array<float, 3>& pos_vel, std::array<float, 3>& acc)
+{
+    if (info_.work_) return false;
+    if (!imu_->sensing()) return false;
+    pos = imu_->pos_;
+    pos_vel = imu_->pos_vel_;
+    acc = imu_->acc_;
+
+    return true;
+}
+
 }

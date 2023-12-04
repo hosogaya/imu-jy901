@@ -20,6 +20,7 @@ public:
     // std::array<float,3> getPosVel();
     // std::array<float,3> getAcc();
     bool getData(std::array<float, 3>& pos, std::array<float, 3>& pos_vel, std::array<float, 3>& acc); 
+    bool read(std::array<float, 3>& pos, std::array<float, 3>& pos_vel, std::array<float, 3>& acc); 
 
     struct Info
     {
