@@ -44,7 +44,7 @@ void ImuDriver::start()
 {
     info_.work_ = true;
     info_.stable_ = true;
-    threads.addThread(threadRead);   
+    threads.addThread(threadRead, 0, 2048);   
 }
 
 void ImuDriver::stop()
