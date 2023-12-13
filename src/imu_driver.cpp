@@ -8,6 +8,7 @@ ImuDriver::Info info_;
 void threadRead()
 {
     long start;
+    threads.setSliceMicros(10);
     while (info_.work_)
     {
         start = micros();
@@ -16,9 +17,9 @@ void threadRead()
         info_.mx_.unlock();
         if (info_.stable_)
         {
-            info_.imu_->getPosture(info_.posture_);
-            info_.imu_->getPostureVel(info_.posture_vel_);
-            info_.imu_->getAccel(info_.acc_);
+            info_.posture_ = info_.imu_->pos_;
+            info_.posture_vel_ = info_.imu_->pos_vel_;
+            info_.acc_ = info_.imu_->acc_;
         }
         while (micros() - start < info_.period_) threads.yield();
     }
