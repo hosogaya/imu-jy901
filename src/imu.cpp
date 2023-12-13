@@ -94,11 +94,12 @@ void IMU::getAccel(std::array<float, 3>& acc) {
     acc[1] = JY901.getAccY();   
     acc[2] = JY901.getAccZ();
 
-    // 静止しているときに{{0.0f, 0.0f, 0.0f}}をとるように補正をかける
-    std::array<float, 3> g{{0.0, 0.0, -1.0}};
-    Ry(g, pos_[1]);
-    Rx(g, pos_[0]);
-    for (size_t i = 0; i < 3; ++i) acc[i] = (acc[i] + g[i])*kGravity_*1e3f; // [g] -> [mm/s^2]
+    // // 静止しているときに{{0.0f, 0.0f, 0.0f}}をとるように補正をかける
+    // std::array<float, 3> g{{0.0, 0.0, -1.0}};
+    // Ry(g, pos_[1]);
+    // Rx(g, pos_[0]);
+    // for (size_t i = 0; i < 3; ++i) acc[i] = (acc[i] + g[i])*kGravity_*1e3f; // [g] -> [mm/s^2]
+    for (size_t i=0; i<acc.size(); ++i) acc[i] *= kGravity_*1e3f;
 }
 
 bool IMU::getPosture(std::array<float, 3>& pos) {

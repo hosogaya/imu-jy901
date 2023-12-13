@@ -30,7 +30,7 @@ ImuDriver::~ImuDriver() {}
 
 void ImuDriver::setup(const long baudrate, HardwareSerial& serial)
 {
-    imu_ = std::make_shared<IMU>(baudrate, serial);
+    info_.imu_ = std::make_shared<IMU>(baudrate, serial);
 }
 
 bool ImuDriver::ready(const float period) // milli second
@@ -41,7 +41,19 @@ bool ImuDriver::ready(const float period) // milli second
 
 void ImuDriver::start() 
 {
+    info_.work_ = true;
+    info_.stable_ = true;
     threads.addThread(threadRead);   
+}
+
+void ImuDriver::stop()
+{
+    info_.work_ = false;
+}
+
+void ImuDriver::release()
+{
+    info_.imu_.reset();
 }
 
 bool ImuDriver::getData(std::array<float, 3>& pos, std::array<float, 3>& pos_vel, std::array<float, 3>& acc)
@@ -62,10 +74,10 @@ bool ImuDriver::getData(std::array<float, 3>& pos, std::array<float, 3>& pos_vel
 bool ImuDriver::read(std::array<float, 3>& pos, std::array<float, 3>& pos_vel, std::array<float, 3>& acc)
 {
     if (info_.work_) return false;
-    if (!imu_->sensing()) return false;
-    pos = imu_->pos_;
-    pos_vel = imu_->pos_vel_;
-    acc = imu_->acc_;
+    if (!info_.imu_->sensing()) return false;
+    pos = info_.imu_->pos_;
+    pos_vel = info_.imu_->pos_vel_;
+    acc = info_.imu_->acc_;
 
     return true;
 }

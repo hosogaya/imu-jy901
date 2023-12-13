@@ -15,6 +15,8 @@ public:
     void setup(const long baudrate, HardwareSerial& serial);
     bool ready(const float period); // milli second
     void start();
+    void stop();
+    void release();
 
     // std::array<float,3> getPos();
     // std::array<float,3> getPosVel();
@@ -35,7 +37,6 @@ public:
     };
 
 private:
-    std::shared_ptr<IMU> imu_;
 };
 
 }
