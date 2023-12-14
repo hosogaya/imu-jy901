@@ -13,7 +13,7 @@ class IMU {
         } CalibrateReg;
 
     private:
-        const float kGravity_ = 9.80665f;
+        const float kGravity_ = 9.8f; // from data sheet
         const float kPI180_ = M_PI/180.0f;
         HardwareSerial* serial_;
         
