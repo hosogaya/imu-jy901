@@ -32,6 +32,7 @@ ImuDriver::~ImuDriver() {}
 void ImuDriver::setup(const long baudrate, HardwareSerial& serial)
 {
     info_.imu_ = std::make_shared<IMU>(baudrate, serial);
+    info_.imu_->timeout_ = 2; //milli second
 }
 
 bool ImuDriver::ready(const float period) // milli second
