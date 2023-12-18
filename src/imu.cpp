@@ -11,7 +11,8 @@ bool IMU::setup(const unsigned long baudrate, HardwareSerial& s)
     serial_->begin(baudrate);
     JY901.attach(*serial_);
     while (! *serial_);
-    setReturnHz(CJY901::ReturnHz::_200);
+    while (!setReturnHz(CJY901::ReturnHz::_200));
+    while (!setBaudrate(CJY901::BaudRate::_115200));
 }
 
 bool IMU::setReturnHz(const CJY901::ReturnHz hz) {
