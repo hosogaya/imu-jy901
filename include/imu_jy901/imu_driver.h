@@ -12,7 +12,7 @@ public:
     ImuDriver();
     ~ImuDriver();
 
-    void setup(const long baudrate, HardwareSerial& serial);
+    void setup(const long baudrate, HardwareSerial& serial, const int timeout=0);
     bool ready(const float period); // milli second
     void start();
     void stop();
